@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Biga Pizza Rechner</title>
+<title>Pizza Rechner</title>
 <style>
 body{margin:0;background:#f2f2f7;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
 .wrap{max-width:480px;margin:auto;padding:16px}
@@ -10,7 +10,7 @@ input{width:100%;padding:14px;font-size:20px;box-sizing:border-box;border-radius
 .row:last-child{border-bottom:none}.name{font-weight:600}.val{font-weight:700}
 .total{font-size:22px;font-weight:700;color:#d35400}
 </style></head><body><div class="wrap">
-<h1>🍕 Biga Pizza Rechner</h1>
+<h1>🍕 Pizza Rechner 🍕</h1>
 <div class="card">
 <label>Anzahl Pizzen</label><input id="anzahl" type="number" value="4" min="1">
 <label>Teiggewicht pro Pizza (g)</label><input id="gewicht" type="number" value="260" min="100">
@@ -24,7 +24,7 @@ function r(){
 let a=+anzahl.value,w=+gewicht.value,f=a*w/bt;
 let m=b.mehl*f,w1=b.w1*f,h=b.h*f,w2=b.w2*f,s=b.s*f,t=m+w1+h+w2+s;
 out.innerHTML=`
-<div class=row><div class=name>La Farina 14</div><div class=val>${g(m)}</div></div>
+<div class=row><div class=name>Mehl 14</div><div class=val>${g(m)}</div></div>
 <div class=row><div class=name>Wasser (Biga)</div><div class=val>${g(w1)}</div></div>
 <div class=row><div class=name>Frischhefe</div><div class=val>${g(h)}</div></div>
 <div class=row><div class=name>Wasser (Hauptteig)</div><div class=val>${g(w2)}</div></div>
