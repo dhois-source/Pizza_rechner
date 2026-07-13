@@ -25,7 +25,6 @@ li{margin-bottom:6px;font-size:15px;line-height:1.4;color:#333}
 .recipe-amount{font-weight:700;color:#000}
 </style></head><body><div class="wrap">
 <h1>🍕 Pizza Rechner 🍕</h1>
-<h1>🤌🏻🤌🏻🤌🏻</h1>
 <div class="card">
 <label>Anzahl Pizzen</label>
 <div class="input-group">
@@ -67,7 +66,7 @@ li{margin-bottom:6px;font-size:15px;line-height:1.4;color:#333}
 <h3>Hauptteig</h3>
 <ul>
     <li>Reife Biga in kleine Stücke zupfen (2-4cm)</li>
-    <li>Mit ca. 100 g von den <span id="r_w2" class="recipe-amount"></span> Wasser langsam vermischen</li>
+    <li>Mit ca. <span id="r_w2_start" class="recipe-amount"></span> von den <span id="r_w2" class="recipe-amount"></span> Wasser langsam vermischen</li>
     <li>Restliches Wasser nach und nach einarbeiten</li>
     <li><span id="r_salz" class="recipe-amount"></span> Salz dazugeben</li>
     <li>Kneten bis glatt und elastisch</li>
@@ -156,6 +155,9 @@ let h = m * HEFE_FAKTOR;
 let s = m * SALZ_FAKTOR;
 let t = m + w1 + h + w2 + s;            
 
+// Berechne die 80% Start-Wassermenge für den Hauptteig-Schritt
+let w2Start = w2 * 0.8;
+
 out.innerHTML=`
 <div class=row><div class=name>Mehl </div><div class=val>${gGanz(m)}</div></div>
 <div class=row><div class=name>Wasser (f. Biga)</div><div class=val>${gGanz(w1)}</div></div>
@@ -164,10 +166,12 @@ out.innerHTML=`
 <div class=row><div class=name>Salz</div><div class=val>${gGanz(s)}</div></div>
 <div class="row total"><div>Gesamtteig</div><div>${gGanz(t)}</div></div>`;
 
+// Werte in das Rezept übertragen
 document.getElementById("r_mehl").innerText = gGanz(m);
 document.getElementById("r_w1").innerText = gGanz(w1);
 document.getElementById("r_hefe").innerText = gHefe(h);
 document.getElementById("r_w2").innerText = gGanz(w2);
+document.getElementById("r_w2_start").innerText = gGanz(w2Start);
 document.getElementById("r_salz").innerText = gGanz(s);
 document.getElementById("r_anzahl").innerText = a;
 document.getElementById("r_gewicht").innerText = w + " g";
