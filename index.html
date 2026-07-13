@@ -9,6 +9,8 @@ input{width:100%;padding:14px;font-size:20px;box-sizing:border-box;border-radius
 .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee;font-size:18px}
 .row:last-child{border-bottom:none}.name{font-weight:600}.val{font-weight:700}
 .total{font-size:22px;font-weight:700;color:#d35400}
+
+/* Styles für die Rezept-Anzeige */
 h2{margin-top:20px;color:#2c3e50;border-bottom:2px solid #eee;padding-bottom:6px;font-size:20px}
 h3{margin-top:14px;margin-bottom:6px;color:#d35400;font-size:16px;text-transform:uppercase;letter-spacing:0.5px}
 ul{margin:0;padding-left:20px}
@@ -21,11 +23,13 @@ li{margin-bottom:6px;font-size:15px;line-height:1.4;color:#333}
 <label>Teiggewicht pro Pizza (g)</label><input id="gewicht" type="number" value="260" min="100">
 </div>
 <div class="card" id="out"></div>
+
 <div class="card">
 <h2>Anleitung & Rezept</h2>
+
 <h3>Biga ansetzen</h3>
 <ul>
-    <li><span id="r_mehl" class="recipe-amount"></span> Mehl</li>
+    <li><span id="r_mehl" class="recipe-amount"></span> La Farina 14</li>
     <li><span id="r_w1" class="recipe-amount"></span> Wasser</li>
     <li><span id="r_hefe" class="recipe-amount"></span> Frischhefe</li>
     <li>Wasser + Hefe mischen</li>
@@ -33,6 +37,7 @@ li{margin-bottom:6px;font-size:15px;line-height:1.4;color:#333}
     <li>2–3 Min. vermengen (krümelig lassen)</li>
     <li>18 Std. bei 18 °C reifen lassen (nicht luftdicht. Nur Schüssel mit Deckel abdecken)</li>
 </ul>
+
 <h3>Hauptteig</h3>
 <ul>
     <li>Reife Biga in kleine Stücke zupfen (2-4cm)</li>
@@ -42,11 +47,13 @@ li{margin-bottom:6px;font-size:15px;line-height:1.4;color:#333}
     <li>Kneten bis glatt und elastisch</li>
     <li>Ziel-Teigtemperatur: 22–24 °C</li>
 </ul>
+
 <h3>Stockgare</h3>
 <ul>
     <li>Teig abdecken</li>
     <li>1 Std. bei 22–24 °C ruhen lassen</li>
 </ul>
+
 <h3>Teiglinge</h3>
 <ul>
     <li>In <span id="r_anzahl" class="recipe-amount"></span> Stücke teilen</li>
@@ -54,16 +61,19 @@ li{margin-bottom:6px;font-size:15px;line-height:1.4;color:#333}
     <li>Rundwirken</li>
     <li>In Teigbox legen</li>
 </ul>
+
 <h3>Stückgare</h3>
 <ul>
     <li>8 Std. bei 22 °C</li>
     <li>Fertig, wenn Teiglinge sichtbar aufgegangen sind und langsam zurückfedern</li>
 </ul>
+
 <h3>Vor dem Backen</h3>
 <ul>
     <li>5–10 Min. entspannen lassen</li>
     <li>Vorsichtig öffnen, Rand nicht ausdrücken</li>
 </ul>
+
 <h3>Ooni Volt 2</h3>
 <ul>
     <li>45 Min. vorheizen</li>
@@ -73,25 +83,40 @@ li{margin-bottom:6px;font-size:15px;line-height:1.4;color:#333}
     <li>Nach 20–30 Sek. drehen</li>
 </ul>
 </div>
+
 </div>
 <script>
 const b={mehl:640,w1:290,h:0.5,w2:125,s:18},bt=1040;
-function g(x){return x.toFixed(1).replace(".",",")+" g";}
+
+// Rundungsfunktion für Mehl, Wasser, Salz, Gesamt (Immer auf ganze Gramm aufrunden)
+function gGanz(x) {
+    return Math.ceil(x).toString() + " g";
+}
+
+// Rundungsfunktion für Hefe (Immer auf 0,1 g aufrunden mit einer Nachkommastelle)
+function gHefe(x) {
+    let aufgerundet = Math.ceil(x * 10) / 10;
+    return aufgerundet.toFixed(1).replace(".", ",") + " g";
+}
+
 function r(){
 let a=+anzahl.value,w=+gewicht.value,f=a*w/bt;
 let m=b.mehl*f,w1=b.w1*f,h=b.h*f,w2=b.w2*f,s=b.s*f,t=m+w1+h+w2+s;
+
 out.innerHTML=`
-<div class=row><div class=name>Mehl </div><div class=val>${g(m)}</div></div>
-<div class=row><div class=name>Wasser (f. Biga)</div><div class=val>${g(w1)}</div></div>
-<div class=row><div class=name>Frischhefe</div><div class=val>${g(h)}</div></div>
-<div class=row><div class=name>Wasser (f. Hauptteig)</div><div class=val>${g(w2)}</div></div>
-<div class=row><div class=name>Salz</div><div class=val>${g(s)}</div></div>
-<div class="row total"><div>Gesamtteig</div><div>${g(t)}</div></div>`;
-document.getElementById("r_mehl").innerText = g(m);
-document.getElementById("r_w1").innerText = g(w1);
-document.getElementById("r_hefe").innerText = g(h);
-document.getElementById("r_w2").innerText = g(w2);
-document.getElementById("r_salz").innerText = g(s);
+<div class=row><div class=name>Mehl </div><div class=val>${gGanz(m)}</div></div>
+<div class=row><div class=name>Wasser (f. Biga)</div><div class=val>${gGanz(w1)}</div></div>
+<div class=row><div class=name>Frischhefe</div><div class=val>${gHefe(h)}</div></div>
+<div class=row><div class=name>Wasser (f. Hauptteig)</div><div class=val>${gGanz(w2)}</div></div>
+<div class=row><div class=name>Salz</div><div class=val>${gGanz(s)}</div></div>
+<div class="row total"><div>Gesamtteig</div><div>${gGanz(t)}</div></div>`;
+
+// Werte in das Rezept übertragen
+document.getElementById("r_mehl").innerText = gGanz(m);
+document.getElementById("r_w1").innerText = gGanz(w1);
+document.getElementById("r_hefe").innerText = gHefe(h);
+document.getElementById("r_w2").innerText = gGanz(w2);
+document.getElementById("r_salz").innerText = gGanz(s);
 document.getElementById("r_anzahl").innerText = a;
 document.getElementById("r_gewicht").innerText = w + " g";
 }
