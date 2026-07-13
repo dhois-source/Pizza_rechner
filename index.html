@@ -24,10 +24,10 @@ function r(){
 let a=+anzahl.value,w=+gewicht.value,f=a*w/bt;
 let m=b.mehl*f,w1=b.w1*f,h=b.h*f,w2=b.w2*f,s=b.s*f,t=m+w1+h+w2+s;
 out.innerHTML=`
-<div class=row><div class=name>Mehl 14</div><div class=val>${g(m)}</div></div>
-<div class=row><div class=name>Wasser (Biga)</div><div class=val>${g(w1)}</div></div>
+<div class=row><div class=name>Mehl </div><div class=val>${g(m)}</div></div>
+<div class=row><div class=name>Wasser (f. Biga)</div><div class=val>${g(w1)}</div></div>
 <div class=row><div class=name>Frischhefe</div><div class=val>${g(h)}</div></div>
-<div class=row><div class=name>Wasser (Hauptteig)</div><div class=val>${g(w2)}</div></div>
+<div class=row><div class=name>Wasser (f. Hauptteig)</div><div class=val>${g(w2)}</div></div>
 <div class=row><div class=name>Salz</div><div class=val>${g(s)}</div></div>
 <div class="row total"><div>Gesamtteig</div><div>${g(t)}</div></div>`;}
 anzahl.oninput=r;gewicht.oninput=r;r();
