@@ -2,12 +2,12 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Pizza Rechner</title>
 <style>
 :root{
   --bg:#faf6f1;
-  --card:#ffffff;
+  --card:rgba(255,253,250,0.92);
   --text:#3d2923;
   --muted:#8c7b70;
   --accent:#e05a3f;
@@ -17,7 +17,7 @@
   --shadow:0 8px 24px rgba(61,41,35,0.08);
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--text);line-height:1.5;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg) url('pizza_wallpaper.jpg') center top / cover no-repeat fixed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--text);line-height:1.5;-webkit-tap-highlight-color:transparent}
 .wrap{max-width:520px;margin:auto;padding:16px;padding-bottom:48px}
 
 /* Hero */
@@ -32,6 +32,11 @@ body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,
 /* Cards */
 .card{background:var(--card);border-radius:24px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow);border:1px solid var(--border)}
 
+/* Toggles */
+.toggle-group{display:flex;gap:10px;margin-bottom:16px;background:#f0ebe5;border-radius:16px;padding:4px}
+.toggle-btn{flex:1;padding:12px 8px;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:var(--muted);transition:all .25s}
+.toggle-btn.active{background:var(--card);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+
 /* Recipe selector */
 .recipe-selector{display:flex;gap:10px;margin-bottom:4px}
 .recipe-btn{flex:1;padding:14px 8px;border:none;border-radius:16px;font-size:14px;font-weight:700;cursor:pointer;background:#f0ebe5;color:var(--muted);transition:all .25s;position:relative}
@@ -43,7 +48,7 @@ body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,
 .input-label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px}
 .input-group{display:flex;align-items:center;background:var(--bg);border-radius:16px;padding:4px;border:2px solid var(--border);transition:border-color .2s}
 .input-group:focus-within{border-color:var(--accent)}
-.input-group button{width:48px;height:48px;background:#fff;border:none;border-radius:12px;font-size:22px;font-weight:700;cursor:pointer;color:var(--accent);box-shadow:0 2px 6px rgba(0,0,0,0.06);transition:transform .1s,background .2s}
+.input-group button{width:48px;height:48px;background:#fff;border:none;border-radius:12px;font-size:22px;font-weight:700;cursor:pointer;color:var(--accent);box-shadow:0 2px 6px rgba(0,0,0,0.06);transition:transform .1s,background .2s;touch-action:manipulation}
 .input-group button:active{transform:scale(0.92);background:#f5f0eb}
 .input-group input{flex:1;text-align:center;border:none;background:transparent;padding:10px;font-size:22px;font-weight:800;color:var(--text);width:100%;outline:none}
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
@@ -101,7 +106,12 @@ input[type=number]{-moz-appearance:textfield}
     <button class="recipe-btn active" onclick="switchRecipe('biga30')" id="btn-biga30">30% Biga</button>
   </div>
 
-  <div class="input-wrap">
+  <div class="toggle-group">
+    <button class="toggle-btn active" onclick="switchMode('pizza')" id="btn-mode-pizza">🍕 Nach Pizzen</button>
+    <button class="toggle-btn" onclick="switchMode('mehl')" id="btn-mode-mehl">🌾 Nach Mehl</button>
+  </div>
+
+  <div class="input-wrap mode-pizza">
     <div class="input-label">
       <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M12 7a5 5 0 0 0-5 5c0 2.8 2.2 5 5 5s5-2.2 5-5a5 5 0 0 0-5-5zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/><path fill="currentColor" d="M7 6.5c1.1-.7 2.6-1 4.1-.7L10.6 4c-1.8 0-3.4.5-4.6 1.2l1 1.3zM17 6.5l1-1.3c-1.2-.7-2.8-1.2-4.6-1.2L13.9 5.8c1.5-.3 3 .1 4.1.7z"/></svg>
       Anzahl Pizzen
@@ -113,7 +123,7 @@ input[type=number]{-moz-appearance:textfield}
     </div>
   </div>
 
-  <div class="input-wrap">
+  <div class="input-wrap mode-pizza">
     <div class="input-label">
       <svg class="icon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/><circle cx="12" cy="12" r="4" fill="currentColor" opacity="0.15"/><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="2"/></svg>
       Teiggewicht pro Pizza (g)
@@ -122,6 +132,18 @@ input[type=number]{-moz-appearance:textfield}
       <button onclick="step('gewicht', -5)">−</button>
       <input id="gewicht" type="number" value="260" min="100" step="5">
       <button onclick="step('gewicht', 5)">+</button>
+    </div>
+  </div>
+
+  <div class="input-wrap mode-mehl" style="display:none">
+    <div class="input-label">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 13v3m-4 0h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Mehl gesamt (g)
+    </div>
+    <div class="input-group">
+      <button onclick="step('mehlTotal', -50)">−</button>
+      <input id="mehlTotal" type="number" value="1000" min="100" step="50">
+      <button onclick="step('mehlTotal', 50)">+</button>
     </div>
   </div>
 
@@ -243,8 +265,9 @@ input[type=number]{-moz-appearance:textfield}
         <li>Großen Teil des Mehls hinzufügen und kneten</li>
         <li>Meersalz hinzufügen, weiterkneten</li>
         <li>Restliches Mehl hinzufügen und weiterkneten</li>
-        <li>Luftdicht im Kühlschrank mindestens <span class="temp-badge">24 Std.</span> ruhen lassen</li>
-        <li>Mindestens <span class="temp-badge">3 Std.</span> vor dem Backen Kugeln formen </li>
+        <li>Luftdicht im Kühlschrank <span class="temp-badge">24 Std.</span> ruhen lassen</li>
+        <li>Nach 24 Std. in Kugeln formen, luftdicht verpackt zurück in den Kühlschrank</li>
+        <li>Kugeln ca. <span class="temp-badge">1 Std.</span> vor dem Backen aus dem Kühlschrank nehmen</li>
       </ul>
     </div>
 
@@ -254,6 +277,7 @@ input[type=number]{-moz-appearance:textfield}
 </div>
 <script>
 let currentRecipe = 'biga30';
+let currentMode = 'pizza';
 
 // Konstanten
 const BIGA_HYDRO_FAKTOR = 0.45;
@@ -265,6 +289,9 @@ const CAPUTO_HEFE_H_FAKTOR = 0.5 / 1000;
 const CAPUTO_SALZ_FAKTOR = 25 / 1000;
 const CAPUTO_WASSER_V_ANTEIL = 140 / 600;
 const CAPUTO_WASSER_H_ANTEIL = 460 / 600;
+
+const MIN_GEWICHT = 230;
+const MAX_GEWICHT = 280;
 
 function gGanz(x) {
     return Math.ceil(x).toString() + " g";
@@ -298,14 +325,54 @@ function switchRecipe(recipe) {
     r();
 }
 
+function switchMode(mode) {
+    currentMode = mode;
+    document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('btn-mode-' + mode).classList.add('active');
+    document.querySelectorAll('.mode-pizza').forEach(el => el.style.display = (mode === 'pizza') ? '' : 'none');
+    document.querySelectorAll('.mode-mehl').forEach(el => el.style.display = (mode !== 'pizza') ? '' : 'none');
+    r();
+}
+
+function berechnePizzaInfo(m, hPct, sumFaktor) {
+    let totalTeig = m * sumFaktor;
+    let anzahl = Math.round(totalTeig / 260);
+    let gewicht = totalTeig / anzahl;
+    if (gewicht < MIN_GEWICHT) {
+        anzahl = Math.floor(totalTeig / MIN_GEWICHT);
+        gewicht = totalTeig / anzahl;
+    } else if (gewicht > MAX_GEWICHT) {
+        anzahl = Math.ceil(totalTeig / MAX_GEWICHT);
+        gewicht = totalTeig / anzahl;
+    }
+    return { anzahl, gewicht: Math.round(gewicht) };
+}
+
 function r(){
-    let a = +anzahl.value;
-    let w = +gewicht.value;
     let hPct = (+hydration.value) / 100;
+    let isMehlMode = currentMode === 'mehl';
+
+    let sumFaktor;
+    if (currentRecipe === 'biga') {
+        sumFaktor = 1 + hPct + HEFE_FAKTOR + SALZ_FAKTOR;
+    } else {
+        sumFaktor = 1 + hPct + CAPUTO_HEFE_V_FAKTOR + CAPUTO_HEFE_H_FAKTOR + CAPUTO_SALZ_FAKTOR;
+    }
+
+    let a, w, mHyper;
+    if (isMehlMode) {
+        mHyper = +mehlTotal.value;
+        let info = berechnePizzaInfo(mHyper, hPct, sumFaktor);
+        a = info.anzahl;
+        w = info.gewicht;
+    } else {
+        a = +anzahl.value;
+        w = +gewicht.value;
+    }
     let zielTeigMenge = a * w;
 
     if (currentRecipe === 'biga') {
-        let m = zielTeigMenge / (1 + hPct + HEFE_FAKTOR + SALZ_FAKTOR);
+        let m = isMehlMode ? mHyper : (zielTeigMenge / sumFaktor);
         let w1 = m * BIGA_HYDRO_FAKTOR;
         let totalWasser = m * hPct;
         let w2 = totalWasser - w1;
@@ -315,6 +382,9 @@ function r(){
         let t = m + w1 + h + w2 + s;
         let w2Start = w2 * 0.8;
 
+        let zielTeigMengeNow = m * sumFaktor;
+        let info = berechnePizzaInfo(m, hPct, sumFaktor);
+
         out.innerHTML=`
         <span class="step-label">Zutaten</span>
         <div class="row"><div class="name">Mehl </div><div class="val">${gGanz(m)}</div></div>
@@ -322,7 +392,9 @@ function r(){
         <div class="row"><div class="name">Frischhefe</div><div class="val">${gHefe(h)}</div></div>
         <div class="row"><div class="name">Wasser für Hauptteig</div><div class="val">${gGanz(w2)}</div></div>
         <div class="row"><div class="name">Salz</div><div class="val">${gGanz(s)}</div></div>
-        <div class="row total"><div class="name">Gesamtteig</div><div class="val">${gGanz(t)}</div></div>`;
+        <div class="row total"><div class="name">Gesamtteig</div><div class="val">${gGanz(t)}</div></div>
+        ${isMehlMode ? `
+        <div class="row total"><div class="name">Ergibt ca.</div><div class="val">${info.anzahl} Pizzen à ${info.gewicht} g</div></div>` : ''}`;
 
         document.getElementById("b_mehl").innerText = gGanz(m);
         document.getElementById("b_w1").innerText = gGanz(w1);
@@ -332,9 +404,13 @@ function r(){
         document.getElementById("b_salz").innerText = gGanz(s);
         document.getElementById("b_r_anzahl").innerText = a;
         document.getElementById("b_r_gewicht").innerText = w + " g";
+
+        if (isMehlMode) {
+            document.getElementById("b_r_anzahl").innerText = info.anzahl;
+            document.getElementById("b_r_gewicht").innerText = info.gewicht + " g";
+        }
     } else {
-        let sumFaktor = 1 + hPct + CAPUTO_HEFE_V_FAKTOR + CAPUTO_HEFE_H_FAKTOR + CAPUTO_SALZ_FAKTOR;
-        let m = zielTeigMenge / sumFaktor;
+        let m = isMehlMode ? mHyper : (zielTeigMenge / sumFaktor);
         let totalWasser = m * hPct;
         let w_vorteig = totalWasser * CAPUTO_WASSER_V_ANTEIL;
         let w_hauptteig = totalWasser * CAPUTO_WASSER_H_ANTEIL;
@@ -344,6 +420,8 @@ function r(){
         let t = m + totalWasser + h_vorteig + h_hauptteig + s;
         let m_vorteig = m * 0.3;
         let m_hauptteig = m * 0.7;
+
+        let info = berechnePizzaInfo(m, hPct, sumFaktor);
 
         out.innerHTML=`
         <span class="step-label">Zutaten</span>
@@ -355,7 +433,9 @@ function r(){
         <div class="row"><div class="name">Wasser für Hauptteig</div><div class="val">${mlWasser(w_hauptteig)}</div></div>
         <div class="row"><div class="name">Meersalz</div><div class="val">${gGanz(s)}</div></div>
         <div class="row"><div class="name">Frischhefe für Hauptteig</div><div class="val">${gHefe(h_hauptteig)}</div></div>
-        <div class="row total"><div class="name">Gesamtteig</div><div class="val">${gGanz(t)}</div></div>`;
+        <div class="row total"><div class="name">Gesamtteig</div><div class="val">${gGanz(t)}</div></div>
+        ${isMehlMode ? `
+        <div class="row total"><div class="name">Ergibt ca.</div><div class="val">${info.anzahl} Pizzen à ${info.gewicht} g</div></div>` : ''}`;
 
         document.getElementById("c_mehl_v").innerText = gGanz(m_vorteig);
         document.getElementById("c_wasser_v").innerText = mlWasser(w_vorteig);
@@ -367,7 +447,7 @@ function r(){
     }
 }
 
-anzahl.oninput=r;gewicht.oninput=r;hydration.oninput=r;r();
+anzahl.oninput=r;gewicht.oninput=r;hydration.oninput=r;mehlTotal.oninput=r;r();
 </script>
 </body>
 </html>
