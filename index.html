@@ -100,8 +100,8 @@ input[type=number]{-moz-appearance:textfield}
 <div class="card">
   <div class="recipe-selector">
     <button class="recipe-btn" onclick="switchRecipe('biga')" id="btn-biga">100% Biga</button>
-    <button class="recipe-btn active" onclick="switchRecipe('biga30')" id="btn-biga30">30% Biga</button>
-    <button class="recipe-btn" onclick="switchRecipe('roemisch')" id="btn-roemisch">Römisch</button>
+    <button class="recipe-btn active" onclick="switchRecipe('biga30')" id="btn-biga30">Classico <br>(30% Biga)</button>
+    <button class="recipe-btn" onclick="switchRecipe('roemisch')" id="btn-roemisch">Romana</button>
   </div>
 
   <div class="toggle-group">
@@ -213,20 +213,10 @@ input[type=number]{-moz-appearance:textfield}
     </div>
 
     <div class="timeline-item">
-      <h4>Vor dem Backen</h4>
-      <ul>
-        <li><span class="temp-badge">5–10 Min.</span> entspannen lassen</li>
-        <li>Vorsichtig öffnen, Rand nicht ausdrücken</li>
-      </ul>
-    </div>
-
-    <div class="timeline-item">
       <div class="bake-box">
-        <h4>🔥 Ooni Volt 2</h4>
+        <h4>🔥 Backen</h4>
         <ul>
-          <li><span class="temp-badge">45 Min.</span> vorheizen</li>
-          <li>Stein: <span class="temp-badge">420–430 °C</span> · Oberhitze: Maximum</li>
-          <li><span class="temp-badge">90–120 Sek.</span> backen</li>
+          <li>Pizzaofen: <span class="temp-badge">430-450 °C</span>, <span class="temp-badge">90 - 120 Sec.</span></li>
           <li>Nach 20–30 Sek. drehen</li>
         </ul>
       </div>
@@ -263,9 +253,40 @@ input[type=number]{-moz-appearance:textfield}
         <li>Großen Teil des Mehls hinzufügen und kneten</li>
         <li>Meersalz hinzufügen, weiterkneten</li>
         <li>Restliches Mehl hinzufügen und weiterkneten</li>
-        <li>Luftdicht im Kühlschrank für mindestens <span class="temp-badge">24 Std.</span> ruhen lassen</li>
-        <li>Mindestens <span class="temp-badge">3 Std.</span> vor dem Backen Teigkugeln formen und bei Raumtemeratur ruhen lassen</li>
       </ul>
+    </div>
+	
+	  <div class="timeline-item">
+      <h4>Stockgare</h4>
+      <ul>
+        <li>Luftdicht im Kühlschrank für mindestens <span class="temp-badge">24 Std.</span> ruhen lassen</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <h4>Teiglinge</h4>
+      <ul>
+        <li>In <span id="c_r_anzahl" class="recipe-amount"></span> Stücke teilen (je ca. <span id="c_r_gewicht" class="recipe-amount"></span>)</li>
+        <li>Rundwirken und in Teigbox legen</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <h4>Stückgare</h4>
+      <ul>
+        <li><span class="temp-badge">3 Std.</span> bei <span class="temp-badge">22 °C</span></li>
+        <li>Fertig, wenn sichtbar aufgegangen und langsam zurückfedern</li>
+      </ul>
+    </div>
+	
+	<div class="timeline-item">
+      <div class="bake-box">
+        <h4>🔥 Backen</h4>
+        <ul>
+          <li>Pizzaofen: <span class="temp-badge">430-450 °C</span>, <span class="temp-badge">90 - 120 Sec.</span></li>
+          <li>Nach 20–30 Sek. drehen</li>
+        </ul>
+      </div>
     </div>
 
   </div>
@@ -537,6 +558,13 @@ function r(){
         document.getElementById("c_wasser_h").innerText = mlWasser(w_hauptteig);
         document.getElementById("c_salz").innerText = gGanz(s);
         document.getElementById("c_hefe_h").innerText = gHefe(h_hauptteig);
+        document.getElementById("c_r_anzahl").innerText = a;
+        document.getElementById("c_r_gewicht").innerText = w + " g";
+
+        if (isMehlMode) {
+            document.getElementById("c_r_anzahl").innerText = info.anzahl;
+            document.getElementById("c_r_gewicht").innerText = info.gewicht + " g";
+        }
     }
 }
 
