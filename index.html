@@ -101,6 +101,7 @@ input[type=number]{-moz-appearance:textfield}
   <div class="recipe-selector">
     <button class="recipe-btn" onclick="switchRecipe('biga')" id="btn-biga">100% Biga</button>
     <button class="recipe-btn active" onclick="switchRecipe('biga30')" id="btn-biga30">30% Biga</button>
+    <button class="recipe-btn" onclick="switchRecipe('roemisch')" id="btn-roemisch">Römisch</button>
   </div>
 
   <div class="toggle-group">
@@ -270,6 +271,59 @@ input[type=number]{-moz-appearance:textfield}
   </div>
 </div>
 
+<!-- RÖMISCHER PIZZATEIG REZEPT -->
+<div class="card recipe" id="recipe-roemisch">
+  <h2 class="section-title"><span class="dot" style="background:var(--accent3)"></span>Zubereitung</h2>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <h4>Teig herstellen</h4>
+      <ul>
+        <li><span id="r_wasser" class="recipe-amount"></span> kaltes Wasser in die Schüssel geben, <span id="r_hefe" class="recipe-amount"></span> Frischhefe darin auflösen</li>
+        <li>Ca. 50 % des Mehls (<span id="r_mehl1" class="recipe-amount"></span>) dazugeben und verrühren, bis Pfannkuchenteig-Konsistenz erreicht ist</li>
+        <li><span id="r_oel" class="recipe-amount"></span> Olivenöl und <span id="r_salz" class="recipe-amount"></span> Salz einarbeiten</li>
+        <li>Restliches Mehl (<span id="r_mehl2" class="recipe-amount"></span>) zugeben und ca. 15–20 Min. von Hand kneten</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <h4>Stockgare</h4>
+      <ul>
+        <li>In Schüssel oder Teigballenbox <span class="temp-badge">60 Min.</span> gehen lassen</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <h4>Teiglinge & Stückgare</h4>
+      <ul>
+        <li>In <span id="r_r_anzahl" class="recipe-amount"></span> Kugeln teilen (je ca. <span id="r_r_gewicht" class="recipe-amount"></span>) und in Pizzaballenbox legen</li>
+        <li><span class="temp-badge">12 Std.</span> im Kühlschrank</li>
+        <li>Danach <span class="temp-badge">4 Std.</span> bei Raumtemperatur ruhen lassen</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <h4>Ausrollen</h4>
+      <ul>
+        <li>Teigkugel auf leicht mit Semola bestreuter Fläche mit Fingerdruck plattdrücken</li>
+        <li>Mit dem Nudelholz ausrollen – die Luft wird bewusst herausgerollt, damit der Teig flach und knusprig bleibt</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="bake-box">
+        <h4>🔥 Backen</h4>
+        <ul>
+          <li>Pizzaofen: <span class="temp-badge">350 °C</span>, <span class="temp-badge">3–5 Min.</span></li>
+          <li>Alternativ Haushaltsofen auf höchster Stufe mit Pizzastein/-stahl</li>
+          <li>Faustregel: backen, bis die Pizza goldbraun und knusprig ist</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 </div>
 <script>
 let currentRecipe = 'biga30';
@@ -285,6 +339,11 @@ const CAPUTO_HEFE_H_FAKTOR = 0.5 / 1000;
 const CAPUTO_SALZ_FAKTOR = 25 / 1000;
 const CAPUTO_WASSER_V_ANTEIL = 140 / 600;
 const CAPUTO_WASSER_H_ANTEIL = 460 / 600;
+
+const ROEMISCH_HEFE_FAKTOR = 1.5 / 1000;
+const ROEMISCH_SALZ_FAKTOR = 30 / 1000;
+const ROEMISCH_OEL_FAKTOR = 30 / 1000;
+const ROEMISCH_HYDRATION = 58;
 
 const MIN_GEWICHT = 230;
 const MAX_GEWICHT = 280;
@@ -317,7 +376,7 @@ function switchRecipe(recipe) {
     document.querySelectorAll('.recipe').forEach(s => s.classList.remove('active'));
     document.getElementById('btn-' + recipe).classList.add('active');
     document.getElementById('recipe-' + recipe).classList.add('active');
-    hydration.value = (recipe === 'biga') ? 65 : 60;
+    hydration.value = (recipe === 'biga') ? 65 : (recipe === 'roemisch') ? ROEMISCH_HYDRATION : 60;
     r();
 }
 
@@ -351,6 +410,8 @@ function r(){
     let sumFaktor;
     if (currentRecipe === 'biga') {
         sumFaktor = 1 + hPct + HEFE_FAKTOR + SALZ_FAKTOR;
+    } else if (currentRecipe === 'roemisch') {
+        sumFaktor = 1 + hPct + ROEMISCH_HEFE_FAKTOR + ROEMISCH_SALZ_FAKTOR + ROEMISCH_OEL_FAKTOR;
     } else {
         sumFaktor = 1 + hPct + CAPUTO_HEFE_V_FAKTOR + CAPUTO_HEFE_H_FAKTOR + CAPUTO_SALZ_FAKTOR;
     }
@@ -404,6 +465,42 @@ function r(){
         if (isMehlMode) {
             document.getElementById("b_r_anzahl").innerText = info.anzahl;
             document.getElementById("b_r_gewicht").innerText = info.gewicht + " g";
+        }
+    } else if (currentRecipe === 'roemisch') {
+        let m = isMehlMode ? mHyper : (zielTeigMenge / sumFaktor);
+        let w1 = m * hPct;
+        let h = m * ROEMISCH_HEFE_FAKTOR;
+        let s = m * ROEMISCH_SALZ_FAKTOR;
+        let oel = m * ROEMISCH_OEL_FAKTOR;
+        let t = m + w1 + h + s + oel;
+        let mehl1 = m * 0.5;
+        let mehl2 = m - mehl1;
+
+        let info = berechnePizzaInfo(m, hPct, sumFaktor);
+
+        out.innerHTML=`
+        <span class="step-label">Zutaten</span>
+        <div class="row"><div class="name">Mehl</div><div class="val">${gGanz(m)}</div></div>
+        <div class="row"><div class="name">Wasser</div><div class="val">${mlWasser(w1)}</div></div>
+        <div class="row"><div class="name">Frischhefe</div><div class="val">${gHefe(h)}</div></div>
+        <div class="row"><div class="name">Meersalz</div><div class="val">${gGanz(s)}</div></div>
+        <div class="row"><div class="name">Olivenöl</div><div class="val">${mlWasser(oel)}</div></div>
+        <div class="row total"><div class="name">Gesamtteig</div><div class="val">${gGanz(t)}</div></div>
+        ${isMehlMode ? `
+        <div class="row total"><div class="name">Ergibt ca.</div><div class="val">${info.anzahl} Pizzen à ${info.gewicht} g</div></div>` : ''}`;
+
+        document.getElementById("r_wasser").innerText = mlWasser(w1);
+        document.getElementById("r_hefe").innerText = gHefe(h);
+        document.getElementById("r_mehl1").innerText = gGanz(mehl1);
+        document.getElementById("r_oel").innerText = mlWasser(oel);
+        document.getElementById("r_salz").innerText = gGanz(s);
+        document.getElementById("r_mehl2").innerText = gGanz(mehl2);
+        document.getElementById("r_r_anzahl").innerText = a;
+        document.getElementById("r_r_gewicht").innerText = w + " g";
+
+        if (isMehlMode) {
+            document.getElementById("r_r_anzahl").innerText = info.anzahl;
+            document.getElementById("r_r_gewicht").innerText = info.gewicht + " g";
         }
     } else {
         let m = isMehlMode ? mHyper : (zielTeigMenge / sumFaktor);
